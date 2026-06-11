@@ -20,7 +20,11 @@ export class EstudianteController {
 
   @Get()
   @ApiOperation({ summary: 'Obtener todos los estudiantes' })
-  @ApiResponse({ status: 200, description: 'Lista de estudiantes', type: [Estudiante] })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de estudiantes',
+    type: [Estudiante],
+  })
   async findAll(): Promise<Estudiante[]> {
     return this.estudianteService.findAll();
   }
@@ -30,10 +34,16 @@ export class EstudianteController {
   @Roles(Role.Admin)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Crear un estudiante (solo admin)' })
-  @ApiResponse({ status: 201, description: 'Estudiante creado', type: Estudiante })
+  @ApiResponse({
+    status: 201,
+    description: 'Estudiante creado',
+    type: Estudiante,
+  })
   @ApiResponse({ status: 401, description: 'No autorizado' })
   @ApiResponse({ status: 403, description: 'Acceso denegado' })
-  async create(@Body() createEstudianteDto: CreateEstudianteDto): Promise<Estudiante> {
+  async create(
+    @Body() createEstudianteDto: CreateEstudianteDto,
+  ): Promise<Estudiante> {
     return this.estudianteService.create(createEstudianteDto);
   }
 }

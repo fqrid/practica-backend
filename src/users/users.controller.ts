@@ -23,18 +23,26 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @ApiOperation({ summary: 'Listar usuarios (solo admin)' })
-  @ApiResponse({ status: 200, description: 'Lista de usuarios', type: [UserResponseDto] })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de usuarios',
+    type: [UserResponseDto],
+  })
   @ApiResponse({ status: 403, description: 'Acceso denegado' })
   async findAll(): Promise<UserResponseDto[]> {
     const users = await this.usersService.findAll();
-    return users.map(UserResponseDto.fromEntity);
+    return users.map((user) => UserResponseDto.fromEntity(user));
   }
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @ApiOperation({ summary: 'Crear usuario (solo admin)' })
-  @ApiResponse({ status: 201, description: 'Usuario creado', type: UserResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Usuario creado',
+    type: UserResponseDto,
+  })
   @ApiResponse({ status: 403, description: 'Acceso denegado' })
   async create(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
     const user = await this.usersService.createUser(createUserDto);

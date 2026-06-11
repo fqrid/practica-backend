@@ -17,8 +17,7 @@ export class DatabaseInitService implements OnModuleInit {
       return;
     }
 
-    const existingAdmin =
-      await this.usersService.findByUsername(adminUsername);
+    const existingAdmin = await this.usersService.findByUsername(adminUsername);
 
     if (existingAdmin) {
       return;
