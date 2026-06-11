@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
@@ -16,6 +16,15 @@ export class EstudianteService {
   }
 
   async create(dto: CreateEstudianteDto): Promise<Estudiante> {
+    const existing = await this.estudianteRepository.findOne({
+      where: { codigo: dto.codigo },
+    });
+    if (existing) {
+      throw new ConflictException(
+        'El estudiante con ese código ya está registrado',
+      );
+    }
+
     const estudiante = this.estudianteRepository.create(dto);
     return this.estudianteRepository.save(estudiante);
   }

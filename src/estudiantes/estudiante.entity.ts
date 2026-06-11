@@ -12,6 +12,6 @@ export class Estudiante {
   nombre: string;
 
   @ApiProperty({ example: '2026001' })
-  @Column()
+  @Column({ unique: true })
   codigo: string;
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
@@ -23,6 +23,11 @@ export class UsersService {
   }
 
   async createUser(dto: CreateUserDto): Promise<User> {
+    const existingUser = await this.findByUsername(dto.username);
+    if (existingUser) {
+      throw new ConflictException('El nombre de usuario ya está registrado');
+    }
+
     const hashedPassword = await bcrypt.hash(dto.password, this.saltRounds);
     const user = this.usersRepository.create({
       username: dto.username,
