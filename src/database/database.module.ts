@@ -20,6 +20,11 @@ import { DatabaseInitService } from './database-init.service';
         logging: configService.get<string>('DB_LOGGING') === 'true',
         autoLoadEntities: true,
         // TODO (estudiante): Agrega la configuración SSL si tu proveedor de base de datos lo requiere.
+        ssl:
+          configService.get<string>('DB_SSL') === 'true' ||
+          configService.get<string>('DB_HOST')?.includes('aivencloud.com')
+            ? { rejectUnauthorized: false }
+            : undefined,
       }),
     }),
     UsersModule,

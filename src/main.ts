@@ -26,6 +26,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   // TODO (estudiante): Habilita CORS si un cliente externo consume esta API.
+  app.enableCors();
 
   const port = Number(configService.get<string>('PORT')) || 3000;
   await app.listen(port, '0.0.0.0');
